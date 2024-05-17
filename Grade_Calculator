@@ -1,0 +1,226 @@
+import java.util.Scanner;
+// Sam Vassallo 
+//Lab 3
+public class grades {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner inFromKBD = new Scanner(System.in);
+		
+		//Starts Program
+		System.out.println("This program will take all the grades form your semester to calculatesulate your grade");
+		
+		
+		// ask user for homework weight
+		System.out.print("Homework Weight? ");
+		int homework_weight = inFromKBD.nextInt();
+		
+		
+		// asks for Exam 1 weight
+		System.out.print("Exam 1 weight? ");
+		int Exam_1_weight = inFromKBD.nextInt();
+		
+		// calculates exam 2 weight MOVE THIS YOU DUMB BITCH 
+		int exam_2_weight =  (100 - (homework_weight + Exam_1_weight));
+
+		
+		//using weihgts print ln
+		System.out.println("Using weights of 50 20 " + exam_2_weight);
+		
+		
+		// Homework grade time
+		System.out.println("Homework:");
+		System.out.print("Number of assignments? ");
+		int homework_assi = inFromKBD.nextInt();
+		homework_assi = zero(homework_assi);
+		
+		
+		//avg homework grade
+		System.out.print("Average Homework grade? ");
+		double avg_homework = inFromKBD.nextDouble();
+		avg_homework = zeroAvg(avg_homework);
+		
+		
+		// late days
+		System.out.print("Number of late days used? ");
+		int late_days = inFromKBD.nextInt();
+	
+		
+		
+		//Labs
+		System.out.print("Labs attended? ");
+		int labs = inFromKBD.nextInt();
+		double total_points = avg_homework * 10 + (labs *4);
+		total_points = reduce(late_days, total_points, homework_assi, labs);
+		total_points = cap(homework_assi, total_points);
+		System.out.println("Total points = " + total_points + (" / 140"));
+		
+		
+		// calls weighted homework scroe method
+		System.out.print("Weighted score = ");
+		System.out.println(weighted_homework_score(homework_weight, avg_homework, homework_assi, labs));
+		
+		
+		//exam 1 detials 
+		System.out.println("Exam 1:");
+		System.out.print("Score? ");
+		int Exam_1_score = inFromKBD.nextInt();
+		Exam_1_score = zeroExam1(Exam_1_score);
+		System.out.print("Curve? ");
+		int Exam_1_curve = inFromKBD.nextInt();
+		
+		
+		// calculates exam 1 total points
+		int Exam_1_total = Exam_1_score + Exam_1_curve;
+		Exam_1_total = capExam1(Exam_1_total);
+		//prints exam one total
+		System.out.println("Total Points " + Exam_1_total + " / 100");
+		System.out.print("Weighted score = ");
+		//Exam_1_total = capExam1(Exam_1_total);
+		
+		
+		// calls exam 1 method
+		System.out.println(weighted_exam_1(Exam_1_weight, Exam_1_total));
+		
+		
+		//exam 2 detials 
+		System.out.println("Exam 2: ");
+		System.out.print("Score? ");
+		int exam_2_score = inFromKBD.nextInt();
+		exam_2_score = zeroExam2(exam_2_score);
+		System.out.print("Curve? ");
+		int exam_2_curve = inFromKBD.nextInt();
+		
+		
+		// calculates exam 2 total
+		int Exam_2_total = exam_2_score + exam_2_curve;
+		Exam_2_total = capExam2(Exam_2_total);
+		System.out.println("Total points " + Exam_2_total + " / 100");
+		double total_exam_2 = exam_2_score + exam_2_curve;
+		System.out.print("Weighted score = ");
+		
+		
+		//called exam 2 method
+		System.out.println(weighted_exam_2(exam_2_weight, total_exam_2));
+		
+		
+		//prints and calls final grade
+		double final_homework_score = weighted_homework_score(homework_weight, avg_homework, homework_assi, labs);
+		double final_weight_exam_1 = weighted_exam_1(Exam_1_weight, Exam_1_total);
+		double final_weight_exam_2 = weighted_exam_2(exam_2_weight, total_exam_2);
+		System.out.print("Course grade: " );
+		System.out.print(final_grade(final_homework_score, final_weight_exam_1,final_weight_exam_2));
+		
+		
+//methods :)			
+		
+	}
+	//calculates weighted homework grade
+	public static double weighted_homework_score(int homework_weight, double avg_homework, int homework_assi, int labs) {
+		double weighted_homework_score = homework_weight * (avg_homework * homework_assi + labs * 4)/(homework_assi * 10 + labs * 10);
+		
+		return weighted_homework_score;
+	}
+	// calculates weighted exam 1 grade
+	public static double weighted_exam_1 (double Exam_1_weight, double Exam_1_total) {
+		
+		double weighted_exam_1 = Exam_1_weight * Exam_1_total / 100;
+		
+		return weighted_exam_1;
+	}
+	// calculates weighted exam 2 grade
+	public static double weighted_exam_2 (double exam_2_weight, double total_exam_2) {
+		double weighted_exam_2 = exam_2_weight * total_exam_2 / 100;
+		
+		 return weighted_exam_2;
+	}
+	//calculates final grade
+	public static double final_grade (double weighted_homework_score, double weighted_exam_1, double weighted_exam_2) {
+		double final_grade = weighted_homework_score + weighted_exam_1 + weighted_exam_2;
+		
+		return final_grade;
+	}
+// takes 0 for homework assi
+	public static int zero(int homework_assi) {
+		if(homework_assi <= 0) {
+			homework_assi = 10;	
+			
+		}
+		return homework_assi;
+
+	}
+
+		// reduces points of users had more late days then assi
+	public static double reduce(int late_days, double total_points, int homework_assi, int labs) {
+
+		if(late_days >= homework_assi + labs ) {
+			 total_points = (total_points * .10);	
+		}
+		return total_points;
+		
+		
+	}
+	//makes sure to take 0 as an input for exam 1
+	public static int zeroExam1(int Exam_1_score){
+		if(Exam_1_score <= 0) {
+			Exam_1_score = 0;	
+		}
+			
+		return Exam_1_score;
+	}
+	//makes sure to take 0 as an input for homework
+	public static double zeroAvg(double avg_homework) {
+		if(avg_homework <=0) {
+			avg_homework = 0;
+		}
+		return avg_homework;
+	}
+	// makes sure to take 0 as a input for exam 2
+	public static int zeroExam2(int exam_2_score) {
+		if(exam_2_score <= 0) {
+			exam_2_score = 0;
+		}
+		return exam_2_score;
+		
+	}
+	// calculates for extra credit for 0 late days
+	public static double zeroLate_days(int late_days, int total_points, int homework_assi) {
+		if (late_days == 0) {
+			total_points += 5;
+		}
+
+		return total_points;
+	}
+	// calculates to cap the score
+	public static double cap(double homework_assi, double total_points) {
+		if (total_points > (homework_assi * 10)){
+			total_points += 0;
+		}
+		return total_points;
+		}
+	// cap exam 1 score at 100 points
+	public static int capExam1(int Exam_1_total) {
+		if (Exam_1_total > 100) {
+			Exam_1_total = 100;
+		}
+		return Exam_1_total;
+		
+	}
+	// cap exam 2 score at 100 points
+	public static int capExam2(int Exam_2_total) {
+		if (Exam_2_total > 100) {
+			Exam_2_total = 100;
+		}
+		return Exam_2_total;
+	}
+	
+}
+
+
+
+	
+
+	
+
+
+
